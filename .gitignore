@@ -1,0 +1,9 @@
+.env
+*.pyc
+__pycache__/
+.venv/
+dbt/target/
+dbt/dbt_packages/
+dbt/logs/
+logs/
+credentials/*.json
