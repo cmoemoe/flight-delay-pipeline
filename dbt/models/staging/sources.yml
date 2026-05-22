@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: flights_raw
+    database: "{{ env_var('GCP_PROJECT_ID') }}"
+    schema: flights_raw
+    tables:
+      - name: flights
+        description: Raw BTS On-Time Performance data loaded monthly from GCS
