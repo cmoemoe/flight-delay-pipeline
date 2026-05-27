@@ -8,10 +8,8 @@ x-airflow-common: &airflow-common
     AIRFLOW__CORE__FERNET_KEY: ''
     AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: 'true'
     AIRFLOW__CORE__LOAD_EXAMPLES: 'false'
-    AIRFLOW__SMTP__SMTP_HOST: smtp.gmail.com
-    AIRFLOW__SMTP__SMTP_PORT: 587
-    AIRFLOW__SMTP__SMTP_STARTTLS: 'true'
-    AIRFLOW__SMTP__SMTP_MAIL_FROM: ${ALERT_EMAIL}
+    PYTHONPATH: /opt/airflow
+    GOOGLE_APPLICATION_CREDENTIALS: /opt/airflow/credentials/gcp-key.json
   env_file:
     - .env
   volumes:
@@ -38,11 +36,7 @@ services:
 
   airflow-init:
     <<: *airflow-common
-    command: >
-      bash -c "airflow db init &&
-               airflow users create --username admin --password admin
-               --firstname Admin --lastname User --role Admin
-               --email ${ALERT_EMAIL}"
+    command: bash -c "airflow db init && airflow users create --username admin --password admin --firstname Admin --lastname User --role Admin --email admin@example.com"
     restart: on-failure
 
   airflow-webserver:
@@ -54,5 +48,5 @@ services:
 
   airflow-scheduler:
     <<: *airflow-common
-    command: scheduler
+    command: bash -c "pip install --user dbt-bigquery==1.7.4 && airflow scheduler"
     restart: always

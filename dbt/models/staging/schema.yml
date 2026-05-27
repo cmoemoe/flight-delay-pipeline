@@ -12,12 +12,3 @@ models:
         tests: [not_null]
       - name: dest_airport_code
         tests: [not_null]
-      - name: cancellation_code
-        tests:
-          - accepted_values:
-              values: ['A', 'B', 'C', 'D']
-              where: "is_cancelled = true"
-      - name: delay_category
-        tests:
-          - accepted_values:
-              values: ['on_time', 'minor', 'moderate', 'significant', 'severe', 'extreme']

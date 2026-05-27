@@ -1,4 +1,3 @@
--- Intermediate: join carrier and airport seed lookups onto cleaned flights
 with flights as (
     select * from {{ ref('stg_flights') }}
 ),
@@ -16,14 +15,13 @@ select
     f.*,
     c.carrier_name,
     c.carrier_group,
-
     oa.airport_name  as origin_airport_name,
     oa.latitude      as origin_lat,
     oa.longitude     as origin_lon,
-
     da.airport_name  as dest_airport_name,
     da.latitude      as dest_lat,
     da.longitude     as dest_lon
-
 from flights f
-left join carriers        c  on f.c
+left join carriers        c  on f.carrier_code        = c.carrier_code
+left join origin_airports oa on f.origin_airport_code = oa.airport_code
+left join dest_airports   da on f.dest_airport_code   = da.airport_code

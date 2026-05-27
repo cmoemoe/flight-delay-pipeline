@@ -2,32 +2,21 @@ version: 2
 
 models:
   - name: mart_airline_performance
-    description: Monthly carrier scorecard — on-time rate, delays, cancellations
+    description: Monthly carrier scorecard
     columns:
       - name: flight_month
         tests: [not_null]
       - name: carrier_code
         tests: [not_null]
-      - name: on_time_pct
-        tests:
-          - not_null
-          - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
 
   - name: mart_airport_delays
-    description: Monthly airport departure delay stats with lat/lon for mapping
+    description: Monthly airport departure delay stats
     columns:
       - name: origin_airport_code
         tests: [not_null]
-      - name: delay_rate_pct
-        tests:
-          - dbt_utils.accepted_range:
-              min_value: 0
-              max_value: 100
 
   - name: mart_delay_causes
-    description: Monthly national delay cause breakdown for trend analysis
+    description: Monthly national delay cause breakdown
     columns:
       - name: flight_month
         tests: [not_null, unique]

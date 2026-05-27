@@ -1,4 +1,3 @@
--- Mart: monthly airport departure delay stats → Power BI geographic breakdown
 with enriched as (
     select * from {{ ref('int_flights_enriched') }}
 )
@@ -11,12 +10,10 @@ select
     origin_state,
     origin_lat,
     origin_lon,
-
     count(*)                                                                    as total_departures,
     countif(is_delayed)                                                         as delayed_departures,
     round(countif(is_delayed) / count(*) * 100, 1)                             as delay_rate_pct,
     round(avg(case when is_delayed then dep_delay_min end), 1)                 as avg_delay_min,
-
     case
         when sum(late_aircraft_delay_min) >= greatest(
                sum(carrier_delay_min), sum(weather_delay_min), sum(nas_delay_min))
@@ -27,7 +24,6 @@ select
         when sum(weather_delay_min) >= sum(nas_delay_min) then 'Weather'
         else 'NAS / ATC'
     end                                                                         as dominant_delay_cause
-
 from enriched
 group by 1, 2, 3, 4, 5, 6, 7
 order by flight_month desc, delay_rate_pct desc

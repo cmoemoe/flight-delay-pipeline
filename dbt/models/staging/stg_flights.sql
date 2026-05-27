@@ -1,4 +1,4 @@
--- Staging: clean types, rename BTS columns, derive flags, filter diverted flights
+-- Staging: clean types, rename BTS columns, derive flags, filter diverted
 with source as (
     select * from {{ source('flights_raw', 'flights') }}
 ),
@@ -9,39 +9,31 @@ renamed as (
         trim(Reporting_Airline)                          as carrier_code,
         trim(Tail_Number)                                as tail_number,
         cast(Flight_Number_Reporting_Airline as string)  as flight_number,
-
         trim(Origin)                                     as origin_airport_code,
         trim(OriginCityName)                             as origin_city,
         trim(OriginState)                                as origin_state,
-
         trim(Dest)                                       as dest_airport_code,
         trim(DestCityName)                               as dest_city,
         trim(DestState)                                  as dest_state,
-
         cast(CRSDepTime as int64)                        as scheduled_dep_time,
         cast(DepTime as int64)                           as actual_dep_time,
         cast(DepDelay as float64)                        as dep_delay_min,
         cast(DepDelayMinutes as float64)                 as dep_delay_min_abs,
-
         cast(CRSArrTime as int64)                        as scheduled_arr_time,
         cast(ArrTime as int64)                           as actual_arr_time,
         cast(ArrDelay as float64)                        as arr_delay_min,
         cast(ArrDelayMinutes as float64)                 as arr_delay_min_abs,
-
-        cast(Cancelled as bool)                          as is_cancelled,
+        case when Cancelled = 1 then true else false end as is_cancelled,
         nullif(trim(CancellationCode), '')               as cancellation_code,
-
         cast(CarrierDelay as float64)                    as carrier_delay_min,
         cast(WeatherDelay as float64)                    as weather_delay_min,
         cast(NASDelay as float64)                        as nas_delay_min,
         cast(SecurityDelay as float64)                   as security_delay_min,
         cast(LateAircraftDelay as float64)               as late_aircraft_delay_min,
-
         cast(AirTime as float64)                         as air_time_min,
         cast(Distance as float64)                        as distance_miles
-
     from source
-    where cast(Diverted as bool) is false or cast(Diverted as bool) is null
+    where Diverted = 0 or Diverted is null
 ),
 
 with_flags as (

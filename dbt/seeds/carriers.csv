@@ -1,0 +1,15 @@
+carrier_code,carrier_name,carrier_group
+AA,American Airlines,Legacy
+DL,Delta Air Lines,Legacy
+UA,United Airlines,Legacy
+WN,Southwest Airlines,Low-cost
+B6,JetBlue Airways,Low-cost
+AS,Alaska Airlines,Low-cost
+NK,Spirit Airlines,Ultra low-cost
+F9,Frontier Airlines,Ultra low-cost
+G4,Allegiant Air,Ultra low-cost
+HA,Hawaiian Airlines,Regional
+MQ,Envoy Air,Regional
+OO,SkyWest Airlines,Regional
+YX,Republic Airways,Regional
+9E,Endeavor Air,Regional
