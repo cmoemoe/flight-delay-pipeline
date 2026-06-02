@@ -80,7 +80,8 @@ def _seed_dbt(**context):
         ["/home/airflow/.local/bin/dbt", "seed",
          "--profiles-dir", "/opt/airflow/dbt",
          "--project-dir", "/opt/airflow/dbt",
-         "--no-use-colors"],
+         "--no-use-colors",
+         "--full-refresh"],
         capture_output=True, text=True, env=env,
         cwd="/opt/airflow/dbt",
     )
@@ -142,8 +143,7 @@ with DAG(
     validate   = PythonOperator(task_id="validate",      python_callable=_validate)
     upload_gcs = PythonOperator(task_id="upload_gcs",    python_callable=_upload_gcs)
     load_bq    = PythonOperator(task_id="load_bigquery", python_callable=_load_bigquery)
-    seed_dbt   = PythonOperator(task_id="dbt_seed",      python_callable=_seed_dbt)
     run_dbt    = PythonOperator(task_id="dbt_run",       python_callable=_run_dbt)
     test_dbt   = PythonOperator(task_id="dbt_test",      python_callable=_test_dbt)
 
-    get_period >> download >> validate >> upload_gcs >> load_bq >> seed_dbt >> run_dbt >> test_dbt
+    get_period >> download >> validate >> upload_gcs >> load_bq >> run_dbt >> test_dbt
