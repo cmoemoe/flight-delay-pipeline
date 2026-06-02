@@ -82,7 +82,7 @@ Each task retries 2× with a 5-minute delay. Email alerts on failure.
 Four-page Power BI report connected to BigQuery via live import:
 
 **Executive Summary** — Total flights, on-time rate, avg delay, cancellation rate KPIs. Monthly on-time trend by airline (2019–2025). On-time rate bar chart ranked by carrier. Delay causes donut chart.
-![Executive Summary](docs/flight-delay-dashboard.png)
+![Executive Summary](docs/screenshots/dashboard.png)
 
 **Airline Performance** — Carrier scorecard table with MoM change. On-time rate bar chart. Stacked delay-minutes chart by cause and airline. Carrier slicer for cross-filtering.
 
