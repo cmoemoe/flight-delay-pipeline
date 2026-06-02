@@ -18,13 +18,14 @@ def load_gcs_to_bq(gcs_uri: str, year: int, month: int) -> int:
     table_ref = f"{PROJECT_ID}.{DATASET}.{TABLE}"
 
     job_config = bigquery.LoadJobConfig(
-        source_format=bigquery.SourceFormat.CSV,
-        skip_leading_rows=1,
-        autodetect=True,
-        write_disposition=bigquery.WriteDisposition.WRITE_APPEND,
-        allow_quoted_newlines=True,
-        ignore_unknown_values=True,
-    )
+   	 source_format=bigquery.SourceFormat.CSV,
+   	 skip_leading_rows=1,
+   	 autodetect=False,
+   	 write_disposition=bigquery.WriteDisposition.WRITE_APPEND,
+   	 allow_quoted_newlines=True,
+   	 ignore_unknown_values=True,
+   	 allow_jagged_rows=True,
+	)
 
     load_job = client.load_table_from_uri(gcs_uri, table_ref, job_config=job_config)
     load_job.result()
