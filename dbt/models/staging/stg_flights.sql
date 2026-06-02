@@ -1,4 +1,4 @@
--- Staging: clean types, rename BTS columns, derive flags, filter diverted
+-- Staging: clean types, rename BTS columns, derive flags, filter diverted, deduplicate
 with source as (
     select * from {{ source('flights_raw', 'flights') }}
 ),
@@ -49,6 +49,16 @@ with_flags as (
             else                                                   'extreme'
         end                                                   as delay_category
     from renamed
+),
+
+deduplicated as (
+    select *,
+        row_number() over (
+            partition by flight_date, carrier_code, flight_number,
+                         origin_airport_code, dest_airport_code, scheduled_dep_time
+            order by flight_date
+        ) as row_num
+    from with_flags
 )
 
-select * from with_flags
+select * except(row_num) from deduplicated where row_num = 1
